@@ -1,4 +1,4 @@
-package com.btplanner.BTripExBackend;
+package com.btplanner.btripexbackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

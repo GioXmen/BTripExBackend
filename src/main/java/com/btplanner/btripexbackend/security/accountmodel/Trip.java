@@ -1,4 +1,4 @@
-package com.btplanner.BTripExBackend.security.AccountModel;
+package com.btplanner.btripexbackend.security.accountmodel;
 
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;

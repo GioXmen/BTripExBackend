@@ -1,7 +1,7 @@
-package com.btplanner.BTripExBackend.security.Repository;
+package com.btplanner.btripexbackend.security.repository;
 
 
-import com.btplanner.BTripExBackend.security.AccountModel.User;
+import com.btplanner.btripexbackend.security.accountmodel.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

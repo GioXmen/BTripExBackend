@@ -1,4 +1,4 @@
-package com.btplanner.BTripExBackend;
+package com.btplanner.btripexbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

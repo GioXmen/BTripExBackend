@@ -1,6 +1,5 @@
-package com.btplanner.BTripExBackend.security.AccountModel;
+package com.btplanner.btripexbackend.security.accountmodel;
 
-import com.btplanner.BTripExBackend.security.AccountModel.Trip;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;

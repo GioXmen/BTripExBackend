@@ -1,6 +1,6 @@
-package com.btplanner.BTripExBackend.security.Repository;
+package com.btplanner.btripexbackend.security.repository;
 
-import com.btplanner.BTripExBackend.security.AccountModel.Trip;
+import com.btplanner.btripexbackend.security.accountmodel.Trip;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
