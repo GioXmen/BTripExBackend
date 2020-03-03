@@ -1,19 +1,23 @@
 package com.btplanner.BTripExBackend.security.AccountModel;
 
 import javax.persistence.*;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "role")
-public class Role {
+@Table(name = "trip")
+public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "trip_id")
     private Long id;
 
+    @Column(name = "trip_name")
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    @JsonBackReference
+    private User user;
 
     public Long getId() {
         return id;
@@ -31,11 +35,11 @@ public class Role {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

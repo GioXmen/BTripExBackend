@@ -1,6 +1,7 @@
 package com.btplanner.BTripExBackend.security.AccountModel;
 
-import com.btplanner.BTripExBackend.security.AccountModel.Role;
+import com.btplanner.BTripExBackend.security.AccountModel.Trip;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,22 +11,27 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "password")
     private String password;
 
     @Transient
     private String passwordConfirm;
 
-    @ManyToMany
-    private Set<Role> roles;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private Set<Trip> trips;
 
     public User(String username, String password){
         this.username = username;
         this.password = password;
     }
+    public User(){}
 
     public Long getId() {
         return id;
@@ -59,11 +65,11 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<Trip> getTrips() {
+        return trips;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setTrips(Set<Trip> trips) {
+        this.trips = trips;
     }
 }
