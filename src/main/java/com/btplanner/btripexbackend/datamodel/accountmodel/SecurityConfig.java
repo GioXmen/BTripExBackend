@@ -1,4 +1,4 @@
-package com.btplanner.btripexbackend.security.accountmodel;
+package com.btplanner.btripexbackend.datamodel.accountmodel;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
