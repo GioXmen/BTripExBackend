@@ -14,10 +14,26 @@ public class Trip {
     @Column(name = "trip_name")
     private String name;
 
+    @Column(name = "trip_thumbnail")
+    private byte[] thumbnail;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     @JsonBackReference
     private User user;
+
+    public Trip(String name, User user){
+        this.name = name;
+        this.user = user;
+    }
+
+    public Trip(String name, User user, byte[] thumbnail){
+        this.name = name;
+        this.user = user;
+        this.thumbnail = thumbnail;
+    }
+
+    public Trip(){}
 
     public Long getId() {
         return id;
@@ -41,5 +57,13 @@ public class Trip {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public byte[] getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(byte[] thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }
