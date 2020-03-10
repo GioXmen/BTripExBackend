@@ -14,8 +14,9 @@ public class Trip {
     @Column(name = "trip_name")
     private String name;
 
-    @Column(name = "trip_thumbnail")
-    private byte[] thumbnail;
+    @Lob
+    @Column( length = 100000, name = "trip_thumbnail" )
+    private String thumbnail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
@@ -27,13 +28,26 @@ public class Trip {
         this.user = user;
     }
 
-    public Trip(String name, User user, byte[] thumbnail){
+    public Trip(Long id, String name, String thumbnail){
+        this.id = id;
         this.name = name;
+        this.thumbnail = thumbnail;
+    }
+
+    public Trip(User user, String name, String thumbnail){
         this.user = user;
+        this.name = name;
         this.thumbnail = thumbnail;
     }
 
     public Trip(){}
+
+    public Trip(final Trip s) {
+        this.id = s.getId();
+        this.name = s.getName();
+        this.thumbnail = s.getThumbnail();
+        //this.user = s.getUser();
+    }
 
     public Long getId() {
         return id;
@@ -59,11 +73,11 @@ public class Trip {
         this.user = user;
     }
 
-    public byte[] getThumbnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(byte[] thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
 }
