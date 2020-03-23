@@ -97,7 +97,8 @@ public class BTripRestController {
             ApiError error = new ApiError(HttpStatus.BAD_REQUEST, BAD_CREDENTIALS);
             return ResponseEntity.badRequest().body(error);
         } else {
-            Trip createdTrip = new Trip(trip.getName(), trip.getUser());
+            Trip createdTrip = new Trip(trip.getName(), validatedUser, trip.getDestination(),
+                    trip.getStartDate(), trip.getEndDate(), trip.getThumbnail(), trip.getDescription());
             tripRepository.save(createdTrip);
             return ResponseEntity.status(HttpStatus.OK).body(tripRepository.findById(createdTrip.getId()));
         }
@@ -124,6 +125,7 @@ public class BTripRestController {
                 + "7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m8\n"
                 + "1p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0R\n"
                 + "ERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg==";
+
         List<Trip> output =
                 createdTrip.stream()
                         .map(s-> {
