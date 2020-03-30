@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Long> {
 
+	@Query("select new Trip(t.id, t.name, t.destination, t.startDate, t.endDate," +
+			" t.description, t.thumbnail, t.user) from Trip t where t.user = ?1 order by t.startDate")
 	List<Trip> findAllByUser(User user);
 
 	@Query("select t.id, t.name, t.thumbnail, t.user from Trip t where t.user = ?1")

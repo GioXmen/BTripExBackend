@@ -26,10 +26,17 @@ public class User {
     @JsonManagedReference
     private List<Trip> trips;
 
+    public User(Long id, String username, String password){
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
     public User(String username, String password){
         this.username = username;
         this.password = password;
     }
+
     public User(){}
 
     public Long getId() {

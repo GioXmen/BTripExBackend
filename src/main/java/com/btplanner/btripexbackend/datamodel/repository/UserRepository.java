@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
     User findByUsername(String username);
 
+    @Query("select new User(u.id, u.username, u.password) from User u where u.username = ?1 and u.password = ?2")
     User findByUsernameAndPassword(String username, String password);
 
     @Modifying

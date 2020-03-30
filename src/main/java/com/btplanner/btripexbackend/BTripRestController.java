@@ -5,14 +5,16 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import com.btplanner.btripexbackend.datamodel.accountmodel.Event;
+import com.btplanner.btripexbackend.datamodel.accountmodel.EventType;
 import com.btplanner.btripexbackend.datamodel.accountmodel.Trip;
+import com.btplanner.btripexbackend.datamodel.repository.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +34,13 @@ public class BTripRestController {
 
     private final UserRepository userRepository;
     private final TripRepository tripRepository;
+    private final EventRepository eventRepository;
 
     public BTripRestController(final UserRepository userRepository,
-            final TripRepository tripRepository) {
+                               final TripRepository tripRepository, final EventRepository eventRepository) {
         this.userRepository = userRepository;
         this.tripRepository = tripRepository;
+        this.eventRepository = eventRepository;
     }
 
     @PostMapping(value = "/user/registration")
@@ -97,8 +101,14 @@ public class BTripRestController {
             ApiError error = new ApiError(HttpStatus.BAD_REQUEST, BAD_CREDENTIALS);
             return ResponseEntity.badRequest().body(error);
         } else {
-            Trip createdTrip = new Trip(trip.getName(), validatedUser, trip.getDestination(),
-                    trip.getStartDate(), trip.getEndDate(), trip.getThumbnail(), trip.getDescription());
+            Trip createdTrip;
+            if(trip.getId() != null) {
+                 createdTrip = new Trip(trip.getId(), trip.getName(), trip.getDestination(), trip.getStartDate(),
+                         trip.getEndDate(), trip.getDescription(), trip.getThumbnail(), validatedUser);
+            } else {
+                 createdTrip = new Trip(trip.getName(), trip.getDestination(), trip.getStartDate(),
+                         trip.getEndDate(), trip.getDescription(), trip.getThumbnail(), validatedUser);
+            }
             tripRepository.save(createdTrip);
             return ResponseEntity.status(HttpStatus.OK).body(tripRepository.findById(createdTrip.getId()));
         }
@@ -138,6 +148,39 @@ public class BTripRestController {
                         .collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
+    }
+
+    @GetMapping(value = "/event/get")
+    @ResponseBody
+    public ResponseEntity<List<Event>> getEventForTrip(@RequestParam(value = "tripId") String tripId) {
+        Trip trip = tripRepository.findById(Long.parseLong(tripId)).orElse(null);
+        List<Event> createdEvents = eventRepository.findAllByTripOrderByStartDate(trip);
+
+        return ResponseEntity.status(HttpStatus.OK).body(createdEvents);
+    }
+
+    @PostMapping(value = "/event/add")
+    @ResponseBody
+    public ResponseEntity<Object> addEvent(@RequestBody Event event) {
+        //check if id exists, based on that do update or add
+
+        Trip trip = tripRepository.findById(Long.parseLong(event.getTrip().getId().toString())).orElse(null);
+        if (trip == null){
+            ApiError error = new ApiError(HttpStatus.BAD_REQUEST, BAD_CREDENTIALS);
+            return ResponseEntity.badRequest().body(error);
+        } else {
+            Event createdEvent;
+            if (event.getId() != null) {
+                createdEvent = new Event(event.getId(), event.getName(), event.getType(), event.getDescription(), event.getLocation(), event.getStartDate(),
+                        event.getEndDate(), event.getEventTime(), event.getExpense(), event.getExpenseReceipt(), trip);
+            } else {
+                createdEvent = new Event(event.getName(), event.getType(), event.getDescription(), event.getLocation(), event.getStartDate(),
+                        event.getEndDate(), event.getEventTime(), event.getExpense(), event.getExpenseReceipt(), trip);
+            }
+
+            eventRepository.save(createdEvent);
+            return ResponseEntity.status(HttpStatus.OK).body(eventRepository.findById(createdEvent.getId()));
+        }
     }
 
 }

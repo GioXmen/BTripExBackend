@@ -43,20 +43,31 @@ public class Trip {
     @JsonManagedReference
     private List<Event> events;
 
-    public Trip(String name, User user, String destination, Date startDate, Date endDate, String thumbnail, String description){
+    public Trip(String name, String destination, Date startDate, Date endDate, String description, String thumbnail, User user){
         this.name = name;
-        this.user = user;
         this.destination = destination;
+        this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.thumbnail = thumbnail;
-        this.description = description;
+        this.user = user;
     }
 
     public Trip(Long id, String name, String thumbnail){
         this.id = id;
         this.name = name;
         this.thumbnail = thumbnail;
+    }
+
+    public Trip(Long id, String name, String destination, Date startDate, Date endDate, String description, String thumbnail, User user){
+        this.id = id;
+        this.name = name;
+        this.destination = destination;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.thumbnail = thumbnail;
+        this.user = user;
     }
 
     public Trip(User user, String name, String thumbnail){
@@ -76,6 +87,7 @@ public class Trip {
         this.startDate = s.getStartDate();
         this.destination = s.getDestination();
         this.description = s.getDescription();
+        this.events = s.getEvents();
         //this.user = s.getUser();
     }
 
@@ -95,22 +107,6 @@ public class Trip {
         this.name = name;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
     public String getDestination() {
         return destination;
     }
@@ -119,12 +115,12 @@ public class Trip {
         this.destination = destination;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getStartDate() {
@@ -135,12 +131,28 @@ public class Trip {
         this.startDate = startDate;
     }
 
-    public String getDescription() {
-        return description;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Event> getEvents() {
