@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EventExpenseReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9d8312da-9e33-44e9-af47-353252bc3a96">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="2112"/>
+	<property name="net.sf.jasperreports.compiler.xml.parser.cache.schemas" value="false"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<import value="org.apache.commons.codec.binary.*"/>
+	<style name="TimesNormal1" hTextAlign="Left" hImageAlign="Left" vTextAlign="Middle" vImageAlign="Middle" fontName="Times New Roman" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="TimesBold1" hTextAlign="Left" hImageAlign="Left" vTextAlign="Middle" vImageAlign="Middle" fontName="Times New Roman" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="TimesItalic1" hTextAlign="Left" hImageAlign="Left" vTextAlign="Middle" vImageAlign="Middle" fontName="Times New Roman" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+	<style name="ArialNormal1" hTextAlign="Left" hImageAlign="Left" vTextAlign="Middle" vImageAlign="Middle" fontName="Arial" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="ArialBold1" hTextAlign="Left" hImageAlign="Left" vTextAlign="Middle" vImageAlign="Middle" fontName="Arial" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="ArialItalic1" hTextAlign="Left" hImageAlign="Left" vTextAlign="Middle" vImageAlign="Middle" fontName="Arial" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+	<subDataset name="Events" uuid="8736fad3-a4df-4c3f-b2ef-f857a19b0f7a">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="name" class="java.lang.String">
+			<fieldDescription><![CDATA[name]]></fieldDescription>
+		</field>
+		<field name="location" class="java.lang.String">
+			<fieldDescription><![CDATA[location]]></fieldDescription>
+		</field>
+		<field name="description" class="java.lang.String">
+			<fieldDescription><![CDATA[description]]></fieldDescription>
+		</field>
+		<field name="expense" class="java.lang.String">
+			<fieldDescription><![CDATA[expense]]></fieldDescription>
+		</field>
+		<field name="expenseReceipt1" class="java.lang.String">
+			<fieldDescription><![CDATA[expenseReceipt1]]></fieldDescription>
+		</field>
+		<field name="expenseReceipt2" class="java.lang.String">
+			<fieldDescription><![CDATA[expenseReceipt2]]></fieldDescription>
+		</field>
+		<field name="expenseReceipt3" class="java.lang.String">
+			<fieldDescription><![CDATA[expenseReceipt3]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="STYLE_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./images/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="events" class="java.util.List">
+		<fieldDescription><![CDATA[events]]></fieldDescription>
+	</field>
+	<background>
+		<band height="799">
+			<image hAlign="Center">
+				<reportElement mode="Opaque" x="-1" y="0" width="555" height="797" uuid="e1276aa2-2e87-4576-bc3d-902154e440a9"/>
+				<imageExpression><![CDATA[$P{IMAGE_DIR} + "background.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="111" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="98" width="555" height="1" uuid="06c6779b-303b-4bcc-a67e-a40b96272560"/>
+				<graphicElement>
+					<pen lineWidth="3.0"/>
+				</graphicElement>
+			</line>
+			<image>
+				<reportElement x="243" y="-10" width="68" height="69" uuid="0b672a68-8b67-4c8d-b8c6-23f31f150e9c"/>
+				<imageExpression><![CDATA[$P{IMAGE_DIR} +"BTrip_logo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="185" y="60" width="189" height="29" uuid="80250eec-95ff-466a-b835-faedc99308d8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{IMAGE_DIR} + "BTrip_Title.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="351" y="10" width="199" height="31" uuid="4264dbbd-8e95-410d-8619-1627f53853e0"/>
+				<imageExpression><![CDATA[$P{IMAGE_DIR} + "Event_expenses_title.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="123" splitType="Prevent">
+			<rectangle radius="10">
+				<reportElement mode="Opaque" x="23" y="10" width="512" height="20" backcolor="#0099CC" uuid="5d09bf21-3ca2-4608-9cf5-24b9f292e950"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<frame>
+				<reportElement mode="Opaque" x="43" y="40" width="473" height="20" isPrintWhenDetailOverflows="true" backcolor="#E3E3E3" uuid="fda699e8-1659-4397-808a-5921a2e5ce77">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#999999"/>
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.25" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<staticText>
+					<reportElement x="0" y="0" width="118" height="20" backcolor="#E3E3E3" uuid="c9ca9f6e-34a2-421f-9dfe-b98af029ff5f">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="true"/>
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<text><![CDATA[Event name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="118" y="0" width="118" height="20" backcolor="#E3E3E3" uuid="41b128db-aa56-4fe2-9a6c-906961527399">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="true"/>
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<text><![CDATA[Event Location]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="236" y="0" width="118" height="20" backcolor="#E3E3E3" uuid="2147d333-200a-41d9-a93f-41596a2414fb">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="true"/>
+						<paragraph leftIndent="5" rightIndent="5"/>
+					</textElement>
+					<text><![CDATA[Event Description]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="354" y="0" width="118" height="20" backcolor="#E3E3E3" uuid="d5efc224-fb34-4ae7-890c-7c258b29fbc0">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="true"/>
+						<paragraph leftIndent="5" rightIndent="5"/>
+					</textElement>
+					<text><![CDATA[Event Expense Total]]></text>
+				</staticText>
+			</frame>
+			<componentElement>
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="43" y="60" width="475" height="30" backcolor="rgba(255, 255, 255, 0.0)" uuid="34186b9e-91d0-496c-a49b-fa080d029615">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Events" uuid="3c62594d-3668-4768-b58c-f3856141d0cd">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{events})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="475">
+						<frame>
+							<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="474" height="30" uuid="de60ab0e-2cb9-4c50-bb4c-0ed943ad17b8"/>
+							<textField isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="118" height="30" backcolor="#FFFFFF" uuid="6d810f32-8830-4323-92cb-b8fb25af0b60">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="1.5"/>
+								</box>
+								<textElement textAlignment="Center">
+									<font fontName="SansSerif"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="118" y="0" width="118" height="30" backcolor="#FFFFFF" uuid="1e4735a7-b28c-4203-81da-84fa68e37644">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="1.5"/>
+								</box>
+								<textElement textAlignment="Center">
+									<font fontName="SansSerif"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{location}]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="236" y="0" width="118" height="30" backcolor="#FFFFFF" uuid="fc9aa454-cae3-4844-807d-730117287fe4">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="1.5"/>
+								</box>
+								<textElement textAlignment="Center">
+									<font fontName="SansSerif"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="354" y="0" width="118" height="30" backcolor="#FFFFFF" uuid="68f97a71-b9ec-4eeb-a88c-bbfc587cde24">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="1.5"/>
+								</box>
+								<textElement textAlignment="Center">
+									<font fontName="SansSerif"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{expense}]]></textFieldExpression>
+							</textField>
+						</frame>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement mode="Opaque" x="43" y="10" width="474" height="20" backcolor="#E3E3E3" uuid="8a041290-c7e7-475b-89b4-642b0fb2cab9">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trip events expenses summary]]></text>
+			</staticText>
+		</band>
+		<band height="320">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<rectangle radius="10">
+				<reportElement mode="Opaque" x="23" y="10" width="512" height="39" backcolor="#0099CC" uuid="4b838fbd-4aac-4494-bbc5-0b3a75040204"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<componentElement>
+				<reportElement x="42" y="60" width="475" height="240" backcolor="#EDEDED" uuid="3c747105-aecf-4c95-ae5a-0cac78297c8b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Events" uuid="f204c3d8-397f-4e22-949a-1aabbcefe1d9">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{events})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="240" width="475">
+						<frame>
+							<reportElement mode="Opaque" x="0" y="0" width="475" height="20" isPrintWhenDetailOverflows="true" backcolor="#E3E3E3" uuid="620fceff-a87f-4481-952d-573034a55a3e">
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.25" lineColor="#999999"/>
+								<leftPen lineWidth="0.25" lineColor="#999999"/>
+								<bottomPen lineWidth="0.25" lineColor="#999999"/>
+								<rightPen lineWidth="0.25" lineColor="#999999"/>
+							</box>
+						</frame>
+						<textField isBlankWhenNull="true">
+							<reportElement mode="Opaque" x="0" y="0" width="475" height="20" backcolor="#E3E3E3" uuid="d741d11c-0ee6-4f84-bbcb-302146a278fd">
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.2"/>
+								<leftPen lineWidth="0.2"/>
+								<bottomPen lineWidth="0.2"/>
+								<rightPen lineWidth="0.2"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="12"/>
+								<paragraph leftIndent="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="10" y="30" width="130" height="190" uuid="2036e543-5f09-4d5c-b91d-f2cadb9daa20"/>
+							<imageExpression><![CDATA[new java.io.ByteArrayInputStream(org.apache.commons.codec.binary.Base64.decodeBase64($F{expenseReceipt1}.getBytes()))]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="180" y="30" width="120" height="190" uuid="1a7a9edf-d74f-4f64-a386-1bc99dc58e75"/>
+							<imageExpression><![CDATA[new java.io.ByteArrayInputStream(org.apache.commons.codec.binary.Base64.decodeBase64($F{expenseReceipt2}.getBytes()))]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="340" y="30" width="120" height="190" uuid="14ee3a19-58b8-43ac-96ce-837c5d809cd5"/>
+							<imageExpression><![CDATA[new java.io.ByteArrayInputStream(org.apache.commons.codec.binary.Base64.decodeBase64($F{expenseReceipt3}.getBytes()))]]></imageExpression>
+						</image>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement mode="Opaque" x="43" y="10" width="474" height="39" forecolor="#000000" backcolor="#E3E3E3" uuid="6ad83cd1-7d0b-4d4d-97fd-9f6923692bf5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="16" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Trip events expenses receipts]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement style="TimesNormal1" stretchType="RelativeToBandHeight" x="470" y="-22" width="80" height="20" uuid="d3645d7a-583b-4846-afe8-ebdfd8aa347a">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="471" y="-2" width="29" height="20" uuid="753fc51f-f38c-4e4e-9ad4-a8baf93e6408"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="TimesNormal1" stretchType="RelativeToBandHeight" x="500" y="-2" width="22" height="20" uuid="edede5b5-3e84-4b39-99b6-db4665e50a1e"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[of]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="522" y="-2" width="28" height="20" uuid="19989bc4-f678-47c6-9b1e-cb01f52b1cd2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

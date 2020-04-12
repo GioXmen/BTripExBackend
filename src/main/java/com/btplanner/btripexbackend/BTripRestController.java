@@ -1,20 +1,20 @@
 package com.btplanner.btripexbackend;
 
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import com.btplanner.btripexbackend.datamodel.accountmodel.Event;
-import com.btplanner.btripexbackend.datamodel.accountmodel.EventType;
 import com.btplanner.btripexbackend.datamodel.accountmodel.Trip;
 import com.btplanner.btripexbackend.datamodel.repository.EventRepository;
+import com.btplanner.btripexbackend.util.ImageUtilityImpl;
+import com.btplanner.btripexbackend.util.JasperReportsUtil;
+import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,17 +30,26 @@ public class BTripRestController {
     private static final String BAD_CREDENTIALS = "Wrong Username or Password";
     private static final String USER_SET = "User has been set";
     private static final String USER_UPDATED = "User has been updated";
+    private static final String DEFAULT_IMAGE_URL = "https://source.unsplash.com/560x560/?trip";
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
     private final TripRepository tripRepository;
     private final EventRepository eventRepository;
 
-    public BTripRestController(final UserRepository userRepository,
-                               final TripRepository tripRepository, final EventRepository eventRepository) {
+    @Autowired
+    private final ImageUtilityImpl imageUtilityImpl;
+
+    @Autowired
+    private final JasperReportsUtil jasperReportsUtil;
+
+    public BTripRestController(final UserRepository userRepository, final ImageUtilityImpl imageUtilityImpl,
+                               final TripRepository tripRepository, final EventRepository eventRepository, final JasperReportsUtil jasperReportsUtil) {
         this.userRepository = userRepository;
         this.tripRepository = tripRepository;
         this.eventRepository = eventRepository;
+        this.imageUtilityImpl = imageUtilityImpl;
+        this.jasperReportsUtil = jasperReportsUtil;
     }
 
     @PostMapping(value = "/user/registration")
@@ -93,7 +102,7 @@ public class BTripRestController {
 
     @PostMapping(value = "/trip/add")
     @ResponseBody
-    public ResponseEntity<Object> addTrip(@RequestBody Trip trip) {
+    public ResponseEntity<Object> addTrip(@RequestBody Trip trip) throws IOException {
         logger.debug("Adding trip for user: {} and trip name {}", trip.getUser().getUsername(), trip.getName());
 
         User validatedUser = userRepository.findByUsername(trip.getUser().getUsername());
@@ -101,6 +110,10 @@ public class BTripRestController {
             ApiError error = new ApiError(HttpStatus.BAD_REQUEST, BAD_CREDENTIALS);
             return ResponseEntity.badRequest().body(error);
         } else {
+            if(trip.getThumbnail() == null){
+                trip.setThumbnail(imageUtilityImpl.getBase64EncodedImage(DEFAULT_IMAGE_URL));
+            }
+
             Trip createdTrip;
             if(trip.getId() != null) {
                  createdTrip = new Trip(trip.getId(), trip.getName(), trip.getDestination(), trip.getStartDate(),
@@ -171,16 +184,29 @@ public class BTripRestController {
         } else {
             Event createdEvent;
             if (event.getId() != null) {
-                createdEvent = new Event(event.getId(), event.getName(), event.getType(), event.getDescription(), event.getLocation(), event.getStartDate(),
-                        event.getEndDate(), event.getEventTime(), event.getExpense(), event.getExpenseReceipt(), trip);
+                createdEvent = new Event(event.getId(), event.getName(), event.getType(), event.getDescription(),
+                        event.getLocation(), event.getStartDate(), event.getEndDate(), event.getEventTime(),
+                        event.getExpense(), event.getExpenseReceipt1(), event.getExpenseReceipt2(), event.getExpenseReceipt3(), trip);
             } else {
-                createdEvent = new Event(event.getName(), event.getType(), event.getDescription(), event.getLocation(), event.getStartDate(),
-                        event.getEndDate(), event.getEventTime(), event.getExpense(), event.getExpenseReceipt(), trip);
+                createdEvent = new Event(event.getName(), event.getType(), event.getDescription(), event.getLocation(),
+                        event.getStartDate(), event.getEndDate(), event.getEventTime(), event.getExpense(),
+                        event.getExpenseReceipt1(), event.getExpenseReceipt2(), event.getExpenseReceipt3(), trip);
             }
 
             eventRepository.save(createdEvent);
             return ResponseEntity.status(HttpStatus.OK).body(eventRepository.findById(createdEvent.getId()));
         }
+    }
+
+    @GetMapping(value = "/report/get")
+    @ResponseBody
+    public ResponseEntity<byte[]> getEventsReportForTrip(@RequestParam(value = "tripId") String tripId) throws IOException, JRException, URISyntaxException {
+        Trip trip = tripRepository.findById(Long.parseLong(tripId)).orElse(null);
+        List<Event> createdEvents = eventRepository.findAllByTripOrderByStartDate(trip);
+
+        byte[] pdf = jasperReportsUtil.generateEventReport(createdEvents);
+
+        return ResponseEntity.status(HttpStatus.OK).body(pdf);
     }
 
 }
