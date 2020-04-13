@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.btplanner.btripexbackend.datamodel.accountmodel.Event;
+import com.btplanner.btripexbackend.datamodel.accountmodel.ExpenseReport;
 import com.btplanner.btripexbackend.datamodel.accountmodel.Trip;
 import com.btplanner.btripexbackend.datamodel.repository.EventRepository;
 import com.btplanner.btripexbackend.util.ImageUtilityImpl;
@@ -198,15 +199,25 @@ public class BTripRestController {
         }
     }
 
-    @GetMapping(value = "/report/get")
+    @GetMapping(value = "/report/generate")
     @ResponseBody
-    public ResponseEntity<byte[]> getEventsReportForTrip(@RequestParam(value = "tripId") String tripId) throws IOException, JRException, URISyntaxException {
+    public ResponseEntity<ExpenseReport> getEventsReportForTrip(@RequestParam(value = "tripId") String tripId,
+                                                                @RequestParam(value = "eventIds", required = false) List<String> ids)
+            throws IOException, JRException, URISyntaxException {
         Trip trip = tripRepository.findById(Long.parseLong(tripId)).orElse(null);
         List<Event> createdEvents = eventRepository.findAllByTripOrderByStartDate(trip);
 
+        if(ids != null) {
+            for (String eventId : ids) {
+                createdEvents.removeIf(s -> s.getId().toString().equals(eventId));
+            }
+        }
         byte[] pdf = jasperReportsUtil.generateEventReport(createdEvents);
+        String encoded = Base64.getEncoder().encodeToString(pdf);
 
-        return ResponseEntity.status(HttpStatus.OK).body(pdf);
+        ExpenseReport newReport = new ExpenseReport(encoded);
+
+        return ResponseEntity.status(HttpStatus.OK).body(newReport);
     }
 
 }
