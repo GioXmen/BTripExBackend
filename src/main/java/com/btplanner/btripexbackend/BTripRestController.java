@@ -1,18 +1,22 @@
 package com.btplanner.btripexbackend;
 
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import com.btplanner.btripexbackend.datamodel.accountmodel.Event;
 import com.btplanner.btripexbackend.datamodel.accountmodel.ExpenseReport;
 import com.btplanner.btripexbackend.datamodel.accountmodel.Trip;
+import com.btplanner.btripexbackend.datamodel.covidmodel.CovidSummary;
 import com.btplanner.btripexbackend.datamodel.repository.EventRepository;
 import com.btplanner.btripexbackend.util.ImageUtilityImpl;
 import com.btplanner.btripexbackend.util.JasperReportsUtil;
 import net.sf.jasperreports.engine.JRException;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,7 @@ import com.btplanner.btripexbackend.datamodel.accountmodel.User;
 import com.btplanner.btripexbackend.datamodel.errormodel.ApiError;
 import com.btplanner.btripexbackend.datamodel.repository.TripRepository;
 import com.btplanner.btripexbackend.datamodel.repository.UserRepository;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class BTripRestController {
@@ -32,11 +37,15 @@ public class BTripRestController {
     private static final String USER_SET = "User has been set";
     private static final String USER_UPDATED = "User has been updated";
     private static final String DEFAULT_IMAGE_URL = "https://source.unsplash.com/560x560/?trip";
+    private static final String OBJECT_PATH = "tmp/";
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
     private final TripRepository tripRepository;
     private final EventRepository eventRepository;
+
+    private static CovidSummary covidSummary;
+    private static Date covidLastUpdated;
 
     @Autowired
     private final ImageUtilityImpl imageUtilityImpl;
@@ -134,13 +143,6 @@ public class BTripRestController {
     public ResponseEntity<List<Trip>> getTripForUser(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
         User user = userRepository.findByUsernameAndPassword(username, password);
         List<Trip> createdTrip = tripRepository.findAllByUser(user);
-/*        byte[] byteArray = Base64.getMimeDecoder().decode("iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEWSyVKWlpaUqXyTtWuSwlqT\n"
-                                                                + "vGOUr3SVooWVnI05h1uwAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4Ysx\n"
-                                                                + "JqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH\n"
-                                                                + "299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df\n"
-                                                                + "7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m8\n"
-                                                                + "1p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0R\n"
-                                                                + "ERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg==");*/
 
         String image ="iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEWSyVKWlpaUqXyTtWuSwlqT\n"
                 + "vGOUr3SVooWVnI05h1uwAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4Ysx\n"
@@ -218,6 +220,20 @@ public class BTripRestController {
         ExpenseReport newReport = new ExpenseReport(encoded);
 
         return ResponseEntity.status(HttpStatus.OK).body(newReport);
+    }
+
+    @GetMapping(value = "/covid/summary")
+    @ResponseBody
+    public ResponseEntity<CovidSummary> getCovidSummary() {
+        Date currentDate = new Date();
+
+        if(covidSummary == null || covidLastUpdated == null || !DateUtils.isSameDay(currentDate, covidLastUpdated)) {
+            RestTemplate restTemplate = new RestTemplate();
+            covidSummary = restTemplate.getForObject("https://api.covid19api.com/summary", CovidSummary.class);
+            covidLastUpdated = currentDate;
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(covidSummary);
     }
 
 }
