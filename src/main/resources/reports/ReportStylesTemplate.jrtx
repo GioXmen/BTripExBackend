@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperTemplate PUBLIC "-//JasperReports//DTD Template//EN" "http://jasperreports.sourceforge.net/dtds/jaspertemplate.dtd">
+
+<jasperTemplate>
+	<style name="TimesNormal1" hAlign="Left" vAlign="Middle" fontName="Times New Roman" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="TimesBold1" hAlign="Left" vAlign="Middle" fontName="Times New Roman" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="TimesItalic1" hAlign="Left" vAlign="Middle" fontName="Times New Roman" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+	<style name="ArialNormal1" hAlign="Left" vAlign="Middle" fontName="Arial" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="ArialBold1" hAlign="Left" vAlign="Middle" fontName="Arial" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="ArialItalic1" hAlign="Left" vAlign="Middle" fontName="Arial" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+</jasperTemplate>

@@ -15,9 +15,24 @@
 	<description>BTrip backend application</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jasperreports.version>6.8.0</jasperreports.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>jrs-client-releases</id>
+			<name>JasperReports Server CE releases repository</name>
+			<url>http://jaspersoft.artifactoryonline.com/jaspersoft/jaspersoft-clients-releases/</url>
+		</repository>
+		<repository>
+			<id>jrs-ce-releases</id>
+			<name>JasperReports Server CE releases repository</name>
+			<url>https://jaspersoft.artifactoryonline.com/jaspersoft/jrs-ce-releases/</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -168,6 +183,35 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.14</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>${jasperreports.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-chart-themes</artifactId>
+			<version>${jasperreports.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-fonts</artifactId>
+			<version>${jasperreports.version}</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -183,6 +227,24 @@
 	</dependencyManagement>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<!--
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                </excludes>
+                -->
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.asciidoctor</groupId>
@@ -218,7 +280,7 @@
 				<version>3.1</version>
 				<configuration>
 					<fork>true</fork>
-					<executable>C:\Program Files\Java\jdk-11.0.6\bin\javac.exe</executable>
+					<executable>C:\Program Files\Java\jdk1.8.0_241\bin\javac.exe</executable>
 				</configuration>
 			</plugin>
 		</plugins>

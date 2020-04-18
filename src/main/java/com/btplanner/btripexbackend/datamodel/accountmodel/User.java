@@ -3,7 +3,7 @@ package com.btplanner.btripexbackend.datamodel.accountmodel;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -24,12 +24,19 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
-    private Set<Trip> trips;
+    private List<Trip> trips;
+
+    public User(Long id, String username, String password){
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
 
     public User(String username, String password){
         this.username = username;
         this.password = password;
     }
+
     public User(){}
 
     public Long getId() {
@@ -64,11 +71,11 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-    public Set<Trip> getTrips() {
+    public List<Trip> getTrips() {
         return trips;
     }
 
-    public void setTrips(Set<Trip> trips) {
+    public void setTrips(List<Trip> trips) {
         this.trips = trips;
     }
 }

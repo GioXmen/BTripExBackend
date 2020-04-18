@@ -2,6 +2,10 @@ package com.btplanner.btripexbackend.datamodel.accountmodel;
 
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "trip")
@@ -14,10 +18,78 @@ public class Trip {
     @Column(name = "trip_name")
     private String name;
 
+    @Column(name = "trip_destination")
+    private String destination;
+
+    @Column(name = "trip_description")
+    private String description;
+
+    @Column(name = "trip_start_date")
+    private Date startDate;
+
+    @Column(name = "trip_end_date")
+    private Date endDate;
+
+    @Lob
+    @Column( length = 100000, name = "trip_thumbnail" )
+    private String thumbnail;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     @JsonBackReference
     private User user;
+
+    @OneToMany(mappedBy = "trip")
+    @JsonManagedReference
+    private List<Event> events;
+
+    public Trip(String name, String destination, Date startDate, Date endDate, String description, String thumbnail, User user){
+        this.name = name;
+        this.destination = destination;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.thumbnail = thumbnail;
+        this.user = user;
+    }
+
+    public Trip(Long id, String name, String thumbnail){
+        this.id = id;
+        this.name = name;
+        this.thumbnail = thumbnail;
+    }
+
+    public Trip(Long id, String name, String destination, Date startDate, Date endDate, String description, String thumbnail, User user){
+        this.id = id;
+        this.name = name;
+        this.destination = destination;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.thumbnail = thumbnail;
+        this.user = user;
+    }
+
+    public Trip(User user, String name, String thumbnail){
+        this.user = user;
+        this.name = name;
+        this.thumbnail = thumbnail;
+    }
+
+    public Trip(){}
+
+    public Trip(final Trip s) {
+        this.id = s.getId();
+        this.user = s.getUser();
+        this.name = s.getName();
+        this.thumbnail = s.getThumbnail();
+        this.endDate = s.getEndDate();
+        this.startDate = s.getStartDate();
+        this.destination = s.getDestination();
+        this.description = s.getDescription();
+        this.events = s.getEvents();
+        //this.user = s.getUser();
+    }
 
     public Long getId() {
         return id;
@@ -35,11 +107,59 @@ public class Trip {
         this.name = name;
     }
 
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
