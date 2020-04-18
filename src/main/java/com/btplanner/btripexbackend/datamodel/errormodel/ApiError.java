@@ -2,7 +2,6 @@ package com.btplanner.btripexbackend.datamodel.errormodel;
 
 import org.springframework.http.HttpStatus;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ApiError {
