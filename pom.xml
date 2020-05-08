@@ -28,9 +28,14 @@
 			<url>https://jaspersoft.jfrog.io/jaspersoft/jaspersoft-clients-releases</url>
 		</repository>
 		<repository>
-			<id>central</id>
+			<id>Jasper central</id>
 			<name>Jaspersoft-releases</name>
 			<url>https://jaspersoft.jfrog.io/jaspersoft/jrs-ce-releases</url>
+		</repository>
+		<repository>
+			<id>Maven central</id>
+			<name>maven repository</name>
+			<url>https://repo1.maven.org/maven2/</url>
 		</repository>
 	</repositories>
 
