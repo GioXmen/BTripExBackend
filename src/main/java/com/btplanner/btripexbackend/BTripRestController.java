@@ -155,6 +155,18 @@ public class BTripRestController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
+    @PostMapping(value = "/trip/remove")
+    @ResponseBody
+    public HttpStatus removeTrip(@RequestBody String tripId) {
+        tripId = tripId.replace("\"", "");
+        Trip trip = tripRepository.findById(Long.parseLong(tripId)).orElse(null);
+        if(trip != null) {
+            tripRepository.delete(trip);
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
+    }
+
     @GetMapping(value = "/event/get")
     @ResponseBody
     public ResponseEntity<List<Event>> getEventForTrip(@RequestParam(value = "tripId") String tripId) {
@@ -186,6 +198,18 @@ public class BTripRestController {
             eventRepository.save(createdEvent);
             return ResponseEntity.status(HttpStatus.OK).body(eventRepository.findById(createdEvent.getId()));
         }
+    }
+
+    @PostMapping(value = "/event/remove")
+    @ResponseBody
+    public HttpStatus removeEvent(@RequestBody String eventId) {
+        eventId = eventId.replace("\"", "");
+        Event event = eventRepository.findById(Long.parseLong(eventId)).orElse(null);
+        if(event != null) {
+            eventRepository.delete(event);
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
     }
 
     @GetMapping(value = "/report/generate")
