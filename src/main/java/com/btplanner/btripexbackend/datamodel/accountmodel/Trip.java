@@ -88,7 +88,6 @@ public class Trip {
         this.destination = s.getDestination();
         this.description = s.getDescription();
         this.events = s.getEvents();
-        //this.user = s.getUser();
     }
 
     public Long getId() {

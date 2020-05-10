@@ -23,14 +23,19 @@
 
 	<repositories>
 		<repository>
-			<id>jrs-client-releases</id>
-			<name>JasperReports Server CE releases repository</name>
-			<url>http://jaspersoft.artifactoryonline.com/jaspersoft/jaspersoft-clients-releases/</url>
+			<id>jaspersoft-clients-snapshots</id>
+			<name>Jaspersoft clients snapshots</name>
+			<url>https://jaspersoft.jfrog.io/jaspersoft/jaspersoft-clients-releases</url>
 		</repository>
 		<repository>
-			<id>jrs-ce-releases</id>
-			<name>JasperReports Server CE releases repository</name>
-			<url>https://jaspersoft.artifactoryonline.com/jaspersoft/jrs-ce-releases/</url>
+			<id>Jasper central</id>
+			<name>Jaspersoft-releases</name>
+			<url>https://jaspersoft.jfrog.io/jaspersoft/jrs-ce-releases</url>
+		</repository>
+		<repository>
+			<id>Maven central</id>
+			<name>maven repository</name>
+			<url>https://repo1.maven.org/maven2/</url>
 		</repository>
 	</repositories>
 
@@ -51,14 +56,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-ldap</artifactId>
 		</dependency>
-<!--		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
-		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
@@ -158,11 +155,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-<!--		<dependency>
-			<groupId>de.flapdoodle.embed</groupId>
-			<artifactId>de.flapdoodle.embed.mongo</artifactId>
-			<scope>test</scope>
-		</dependency>-->
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
@@ -230,11 +222,6 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<!--
-                <excludes>
-                    <exclude>**/*.properties</exclude>
-                </excludes>
-                -->
 				<filtering>true</filtering>
 			</resource>
 		</resources>
@@ -278,12 +265,7 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
-				<configuration>
-					<fork>true</fork>
-					<executable>C:\Program Files\Java\jdk1.8.0_241\bin\javac.exe</executable>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

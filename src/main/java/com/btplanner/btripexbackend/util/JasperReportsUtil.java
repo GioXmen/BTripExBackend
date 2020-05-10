@@ -17,8 +17,7 @@ import java.util.Map;
 public class JasperReportsUtil {
 
     public byte[] generateEventReport(List<Event> events) throws IOException, JRException, URISyntaxException {
-        InputStream inputStream = new FileInputStream("src/main/resources/reports/EventExpenseReport.jrxml");
-        OutputStreamExporterOutput outputStream = null;
+        InputStream inputStream = this.getClass().getResourceAsStream("/reports/EventExpenseReport.jrxml");
 
         EventBean eventBean = new EventBean();
         eventBean.setEvents(events);
@@ -28,7 +27,6 @@ public class JasperReportsUtil {
 
         JRBeanCollectionDataSource EVENTS_DATA_SOURCE = new JRBeanCollectionDataSource(databeanlist);
         Map<String, Object> parameters = new HashMap<String, Object>();
-        //parameters.put("EVENTS_DATA_SOURCE", EVENTS_DATA_SOURCE);
         parameters.put("IMAGE_DIR", "reports/images/");
         parameters.put("STYLE_DIR", "reports/");
 
@@ -36,21 +34,9 @@ public class JasperReportsUtil {
         JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, EVENTS_DATA_SOURCE);
-        //JasperExportManager.exportReportToPdfFile(jasperPrint, "tmp/event_expense_report.pdf");
 
         ByteArrayOutputStream finalReport = new ByteArrayOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, finalReport);
         return finalReport.toByteArray();
-
-/*        OutputStream out = new FileOutputStream("tmp/event_expense_report.pdf");
-        out.write(pdf);
-        out.close();*/
-
-
-/*        JRPdfExporter pdfExporter = new JRPdfExporter();
-        pdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        pdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput("src/main/resources/reports/event_expense_report.pdf"));
-        //outputStream = pdfExporter.getExporterOutput();
-        pdfExporter.exportReport();*/
     }
 }

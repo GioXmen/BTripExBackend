@@ -3,8 +3,6 @@ package com.btplanner.btripexbackend;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,19 +32,14 @@ public class BTripRestController {
     private static final String USER_ALREADY_EXISTS = "User already exists, please choose a different username";
     private static final String USER_NOT_FOUND = "User could not be found";
     private static final String BAD_CREDENTIALS = "Wrong Username or Password";
-    private static final String USER_SET = "User has been set";
     private static final String USER_UPDATED = "User has been updated";
     private static final String DEFAULT_IMAGE_URL = "https://source.unsplash.com/560x560/?trip";
-    private static final String OBJECT_PATH = "tmp/";
+    private static CovidSummary covidSummary;
+    private static Date covidLastUpdated;
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
     private final UserRepository userRepository;
     private final TripRepository tripRepository;
     private final EventRepository eventRepository;
-
-    private static CovidSummary covidSummary;
-    private static Date covidLastUpdated;
-
     @Autowired
     private final ImageUtilityImpl imageUtilityImpl;
 
@@ -68,14 +61,12 @@ public class BTripRestController {
         logger.debug("Registering user account with information: {} and {}", user.getUsername(), user.getPassword());
 
         User validatedUser = userRepository.findByUsername(user.getUsername());
-        if (validatedUser != null){
+        if (validatedUser != null) {
             ApiError error = new ApiError(HttpStatus.BAD_REQUEST, USER_ALREADY_EXISTS);
-            //return  ResponseEntity.badRequest().body(USER_ALREADY_EXISTS);
             return ResponseEntity.badRequest().body(error);
         } else {
             User createdUser = new User(user.getUsername(), user.getPassword());
             userRepository.save(createdUser);
-            //return ResponseEntity.status(HttpStatus.OK).body(USER_SET);
             return ResponseEntity.status(HttpStatus.OK).body(userRepository.findByUsername(user.getUsername()));
         }
     }
@@ -86,12 +77,10 @@ public class BTripRestController {
         logger.debug("Authenticating user account with information: {} and {}", username, password);
 
         User validatedUser = userRepository.findByUsernameAndPassword(username, password);
-        if (validatedUser == null){
+        if (validatedUser == null) {
             ApiError error = new ApiError(HttpStatus.BAD_REQUEST, BAD_CREDENTIALS);
-            //return ResponseEntity.badRequest().body(BAD_CREDENTIALS);
             return ResponseEntity.badRequest().body(error);
         } else {
-            //return ResponseEntity.status(HttpStatus.OK).body(validatedUser.getId().toString());
             return ResponseEntity.status(HttpStatus.OK).body(userRepository.findByUsernameAndPassword(username, password));
         }
     }
@@ -102,7 +91,7 @@ public class BTripRestController {
         logger.debug("Resetting user account with information: {} and {}", username, password);
 
         User validatedUser = userRepository.findByUsername(username);
-        if (validatedUser == null){
+        if (validatedUser == null) {
             return ResponseEntity.badRequest().body(USER_NOT_FOUND);
         } else {
             userRepository.updateUserPassword(username, password);
@@ -116,21 +105,21 @@ public class BTripRestController {
         logger.debug("Adding trip for user: {} and trip name {}", trip.getUser().getUsername(), trip.getName());
 
         User validatedUser = userRepository.findByUsername(trip.getUser().getUsername());
-        if (validatedUser == null){
+        if (validatedUser == null) {
             ApiError error = new ApiError(HttpStatus.BAD_REQUEST, BAD_CREDENTIALS);
             return ResponseEntity.badRequest().body(error);
         } else {
-            if(trip.getThumbnail() == null){
+            if (trip.getThumbnail() == null) {
                 trip.setThumbnail(imageUtilityImpl.getBase64EncodedImage(DEFAULT_IMAGE_URL));
             }
 
             Trip createdTrip;
-            if(trip.getId() != null) {
-                 createdTrip = new Trip(trip.getId(), trip.getName(), trip.getDestination(), trip.getStartDate(),
-                         trip.getEndDate(), trip.getDescription(), trip.getThumbnail(), validatedUser);
+            if (trip.getId() != null) {
+                createdTrip = new Trip(trip.getId(), trip.getName(), trip.getDestination(), trip.getStartDate(),
+                        trip.getEndDate(), trip.getDescription(), trip.getThumbnail(), validatedUser);
             } else {
-                 createdTrip = new Trip(trip.getName(), trip.getDestination(), trip.getStartDate(),
-                         trip.getEndDate(), trip.getDescription(), trip.getThumbnail(), validatedUser);
+                createdTrip = new Trip(trip.getName(), trip.getDestination(), trip.getStartDate(),
+                        trip.getEndDate(), trip.getDescription(), trip.getThumbnail(), validatedUser);
             }
             tripRepository.save(createdTrip);
             return ResponseEntity.status(HttpStatus.OK).body(tripRepository.findById(createdTrip.getId()));
@@ -144,7 +133,7 @@ public class BTripRestController {
         User user = userRepository.findByUsernameAndPassword(username, password);
         List<Trip> createdTrip = tripRepository.findAllByUser(user);
 
-        String image ="iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEWSyVKWlpaUqXyTtWuSwlqT\n"
+        String image = "iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEWSyVKWlpaUqXyTtWuSwlqT\n"
                 + "vGOUr3SVooWVnI05h1uwAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4Ysx\n"
                 + "JqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH\n"
                 + "299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df\n"
@@ -154,16 +143,28 @@ public class BTripRestController {
 
         List<Trip> output =
                 createdTrip.stream()
-                        .map(s-> {
-                            Trip n = new Trip(s); // create new instance
-                            if(n.getThumbnail() == null){
-                                n.setThumbnail(image); // mutate its state
+                        .map(s -> {
+                            Trip n = new Trip(s);
+                            if (n.getThumbnail() == null) {
+                                n.setThumbnail(image);
                             }
-                            return n; // return mutated instance
+                            return n;
                         })
                         .collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
+    }
+
+    @PostMapping(value = "/trip/remove")
+    @ResponseBody
+    public HttpStatus removeTrip(@RequestBody String tripId) {
+        tripId = tripId.replace("\"", "");
+        Trip trip = tripRepository.findById(Long.parseLong(tripId)).orElse(null);
+        if(trip != null) {
+            tripRepository.delete(trip);
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
     }
 
     @GetMapping(value = "/event/get")
@@ -178,10 +179,8 @@ public class BTripRestController {
     @PostMapping(value = "/event/add")
     @ResponseBody
     public ResponseEntity<Object> addEvent(@RequestBody Event event) {
-        //check if id exists, based on that do update or add
-
         Trip trip = tripRepository.findById(Long.parseLong(event.getTrip().getId().toString())).orElse(null);
-        if (trip == null){
+        if (trip == null) {
             ApiError error = new ApiError(HttpStatus.BAD_REQUEST, BAD_CREDENTIALS);
             return ResponseEntity.badRequest().body(error);
         } else {
@@ -201,6 +200,18 @@ public class BTripRestController {
         }
     }
 
+    @PostMapping(value = "/event/remove")
+    @ResponseBody
+    public HttpStatus removeEvent(@RequestBody String eventId) {
+        eventId = eventId.replace("\"", "");
+        Event event = eventRepository.findById(Long.parseLong(eventId)).orElse(null);
+        if(event != null) {
+            eventRepository.delete(event);
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
+    }
+
     @GetMapping(value = "/report/generate")
     @ResponseBody
     public ResponseEntity<ExpenseReport> getEventsReportForTrip(@RequestParam(value = "tripId") String tripId,
@@ -209,7 +220,7 @@ public class BTripRestController {
         Trip trip = tripRepository.findById(Long.parseLong(tripId)).orElse(null);
         List<Event> createdEvents = eventRepository.findAllByTripOrderByStartDate(trip);
 
-        if(ids != null) {
+        if (ids != null) {
             for (String eventId : ids) {
                 createdEvents.removeIf(s -> s.getId().toString().equals(eventId));
             }
@@ -227,7 +238,7 @@ public class BTripRestController {
     public ResponseEntity<CovidSummary> getCovidSummary() {
         Date currentDate = new Date();
 
-        if(covidSummary == null || covidLastUpdated == null || !DateUtils.isSameDay(currentDate, covidLastUpdated)) {
+        if (covidSummary == null || covidLastUpdated == null || !DateUtils.isSameDay(currentDate, covidLastUpdated)) {
             RestTemplate restTemplate = new RestTemplate();
             covidSummary = restTemplate.getForObject("https://api.covid19api.com/summary", CovidSummary.class);
             covidLastUpdated = currentDate;

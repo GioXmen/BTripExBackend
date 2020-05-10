@@ -14,7 +14,6 @@ import java.util.Optional;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    //TODO: Once multiple receipts are added, optimize to exclude receipts from get Events
     List<Event> findAllByTrip(Trip trip);
 
     List<Event> findAllByTripOrderByStartDate(Trip trip);
