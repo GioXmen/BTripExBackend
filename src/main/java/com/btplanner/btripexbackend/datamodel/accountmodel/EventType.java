@@ -4,6 +4,13 @@ public enum EventType {
 
     HOTEL,
     RESTAURANT,
-    FLIGHT;
+    FLIGHT,
+    TRANSPORTATION,
+    MEETING,
+    ACTIVITY,
+    ENTERTAINMENT,
+    SHOPPING,
+    SIGHTSEEING,
+    OTHER
 
 }
